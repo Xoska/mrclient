@@ -16,18 +16,18 @@
   },
   "scripts": {
     "postinstall": "bower install",
-
     "prestart": "npm install",
     "start": "http-server -a localhost -p 8000 -c-1 ./app",
-
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
-
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor e2e-tests/protractor.conf.js"
+  },
+  "dependencies": {
+    "sockjs-client": "~1.1.1",
+    "eventsource": "~0.2.1"
   }
 }

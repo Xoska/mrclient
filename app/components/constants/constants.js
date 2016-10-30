@@ -11,6 +11,22 @@ angular.module('constants', [])
         notAuthorized: 'auth-not-authorized'
     })
 
-    .constant('AUTHORIZED_ROLES', [1, 2, 3]);
+    .constant('SESSION_STATE', {
+            sessionExpired: 'SESSION_EXPIRED',
+            sessionInvalid: 'SESSION_INVALID'
+    })
+
+    .constant('USER_ROLES', {
+        ANONYMOUS: 'ANONYMOUS',
+        ADMINISTRATOR: 'ADMINISTRATOR',
+        PRIVILEGED_MEMBER: 'PRIVILEGED_MEMBER',
+        MEMBER: 'MEMBER'
+    })
+
+    .constant('ENVIRONMENT', {
+        LOCAL: 'http://localhost:8080/'
+    });
+
+
 
 

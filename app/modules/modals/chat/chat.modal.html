@@ -1,0 +1,49 @@
+<script type="text/ng-template" id="chatModal.html">
+    <div class="modal-header">
+        <h3>
+            Chat
+        </h3>
+    </div>
+    <div class="modal-body">
+
+        <p ng-repeat="username in usernames" class="message">
+            <span>{{ username }}</span>
+        </p>
+
+        <p ng-repeat="post in posts | orderBy:'time':true" class="message">
+            <time>[{{ post.time | date:'HH:mm' }}]</time>
+            <span>{{ post.username }} : {{post.content}}</span>
+        </p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-horizontal ng-pristine ng-valid" role="form" name="chatModalForm">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"
+                               ng-class="profileForm.firstName.$invalid? 'color-danger' : ''">
+                            Content :
+                        </label>
+
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control"
+                                   ng-class="post.content.$invalid ? 'ui-select-danger' : ''"
+                                   name="content" ng-model="post.content" required/>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="col-sm-8">
+
+                                <input type="submit"  ng-disabled="chatModalForm.$invalid"
+                                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
+                                       ng-click="submit()"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="cancel()">{{ ::LABELS.CANCEL }}</button>
+    </div>
+</script>

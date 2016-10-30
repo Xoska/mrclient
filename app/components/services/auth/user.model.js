@@ -1,38 +1,39 @@
 'use strict';
 
 angular.module('services')
-    .factory('UserModel', function () {
+    .factory('UserModel', function ($cookieStore, HelperService) {
 
         var currentUser = null;
 
-        function getCurrentUser () {
+        function getCurrentUser() {
 
             return currentUser;
         }
 
-        function setCurrentUser (user) {
+        function setCurrentUser(session) {
 
-            currentUser = user;
+            $cookieStore.put('token', session.name);
+
+            currentUser = session;
         }
 
         function isAuthenticated() {
 
-            return !!currentUser.idProfile;
+            return currentUser.idProfile && $cookieStore.get('token');
         }
 
         function isAuthorized(authorizedRoles) {
-
-            if (!angular.isArray(authorizedRoles)) {
-
-                authorizedRoles = [authorizedRoles];
-            }
-
-            return (isAuthenticated() && authorizedRoles.indexOf(currentUser.idRole) !== -1);
+            
+            return (isAuthenticated() && authorizedRoles.indexOf(currentUser.role) !== -1);
         }
 
         function destroyUser() {
 
+            $cookieStore.remove('token');
+
             currentUser = null;
+
+            HelperService.redirectTo('login');
         }
 
         return {

@@ -2,10 +2,15 @@
 
 angular.module('mrclient.login', [])
 
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function($routeProvider, USER_ROLES) {
       
         $routeProvider.when('/login', {
-            templateUrl: 'modules/login/view/login.html',
-            controller: 'LoginCtrl'
+            templateUrl: 'modules/login/login.html',
+            controller: 'LoginCtrl',
+            data: {
+                authorizedRoles: [
+                    USER_ROLES.ANONYMOUS
+                ]
+            }
         });
     }]);

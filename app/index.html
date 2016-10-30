@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="mrclient" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="mrclient" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="mrclient" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="mrclient" class="no-js"> <!--<![endif]-->
+<!--[if lt IE 7]>      <html lang="en" ng-app="mrclient" class="no-js lt-ie9 lt-ie8 lt-ie7" ng-controller="AppCtrl"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="mrclient" class="no-js lt-ie9 lt-ie8" ng-controller="AppCtrl"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="mrclient" class="no-js lt-ie9" ng-controller="AppCtrl"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="mrclient" class="no-js" ng-controller="AppCtrl"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
   <ul class="menu">
     <li><a href="#!/logout">Logout</a></li>
     <li><a href="#!/profile">Profile</a></li>
-    <li><a href="#!/searchChat">Search Chat</a></li>
+    <li><a href="#!/search">Search</a></li>
   </ul>
 
   <!--[if lt IE 7]>
@@ -39,13 +39,20 @@
   <script src="components/services/services.module.js"></script>
   <script src="components/services/auth/auth.service.js"></script>
   <script src="components/services/auth/user.model.js"></script>
+  <script src="components/services/meetRoulette/meetRoulette.service.js"></script>
+  <script src="components/services/chat/chat.service.js"></script>
   <script src="modules/login/login.module.js"></script>
-  <script src="modules/login/controller/login.controller.js"></script>
+  <script src="modules/login/login.controller.js"></script>
+  <script src="modules/logout/logout.module.js"></script>
+  <script src="modules/logout/logout.controller.js"></script>
   <script src="modules/profile/profile.module.js"></script>
-  <script src="modules/profile/controller/profile.controller.js"></script>
-  <script src="modules/profile/service/profile.service.js"></script>
-  <script src="modules/searchChat/searchChat.module.js"></script>
-  <script src="modules/searchChat/controller/searchChat.controller.js"></script>
-  <script src="modules/searchChat/service/searchChat.service.js"></script>
+  <script src="modules/profile/profile.controller.js"></script>
+  <script src="modules/profile/profile.service.js"></script>
+  <script src="modules/search/search.module.js"></script>
+  <script src="modules/search/search.controller.js"></script>
+  <script src="modules/search/search.service.js"></script>
+  <script src="modules/modals/modals.module.js"></script>
+  <script src="modules/modals/chat/chat.modal.controller.js"></script>
+  <script src="modules/modals/chat/chat.modal.service.js"></script>
 </body>
 </html>

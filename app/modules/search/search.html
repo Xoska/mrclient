@@ -1,0 +1,132 @@
+<div class="page">
+
+    <section class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-heading-title">search chat Management</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-10">
+                    <form class="form-horizontal ng-pristine ng-valid" role="form" name="searchForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                Country :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <span class="ui-select">
+                                    <select ng-options="country.idCountry as country.name for country in countries "
+                                            ng-model="search.idCountry" ng-change="updateSelectCountry()"
+                                            name="country">
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                State :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <span class="ui-select">
+                                    <select ng-options="state.idState as state.name for state in states "
+                                            ng-model="search.idState" ng-change="updateSelectState()"
+                                            name="state">
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.city.$invalid? 'color-danger' : ''">
+                                Cities :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <span class="ui-select">
+                                        <div ng-dropdown-multiselect=""
+                                             options="cities"
+                                             selected-model="search.idsCity"
+                                             extra-settings="citiesSettings">
+                                        </div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.sex.$invalid? 'color-danger' : ''">
+                                Sex :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <span class="ui-select">
+                                    <select ng-options="sex.idSex as sex.name for sex in sexes "
+                                            ng-model="search.idSex" name="sex">
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.goal.$invalid? 'color-danger' : ''">
+                                Goal :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <span class="ui-select">
+                                    <select ng-options="goal.idGoal as goal.name for goal in goals "
+                                            ng-model="search.idGoal" name="goal" required>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.ageMin.$invalid? 'color-danger' : ''">
+                                Minimum Age :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control"
+                                       ng-class="searchForm.ageMin.$invalid ? 'ui-select-danger' : ''"
+                                       name="ageMin" ng-model="search.ageMin" ng-min="16"
+                                       maxlength="3" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.ageMax.$invalid? 'color-danger' : ''">
+                                Maximum Age :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control"
+                                       ng-class="searchForm.ageMax.$invalid ? 'ui-select-danger' : ''"
+                                       name="ageMax" ng-model="search.ageMax"
+                                       maxlength="3" required/>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="col-sm-8">
+
+                                <input type="submit"  ng-disabled="searchForm.$invalid"
+                                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
+                                       ng-click="submit()"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

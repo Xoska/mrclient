@@ -14,6 +14,7 @@
     "angularjs-dropdown-multiselect": "^1.5.2",
     "underscore": "^1.8.3",
     "AngularJS-Toaster": "angularjs-toaster#^2.0.0",
-    "angular-toastr": "^2.1.1"
+    "angular-toastr": "^2.1.1",
+    "ngprogress": "^1.1.3"
   }
 }

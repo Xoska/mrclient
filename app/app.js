@@ -4,6 +4,10 @@
 angular.module('mrclient', [
     'ngRoute',
     'restangular',
+    'ngProgress',
+    'ngCookies',
+    'toastr',
+    'ngAnimate',
 
     'constants',
     'services',

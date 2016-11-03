@@ -28,3 +28,11 @@
   content: "";
   padding: 0;
 }
+
+.menu-active {
+  font-size: 200%;
+}
+
+.color-danger {
+  color: red;
+}

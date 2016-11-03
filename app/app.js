@@ -6,22 +6,25 @@ angular.module('mrclient', [
     'restangular',
     'ngProgress',
     'ngCookies',
+    'pascalprecht.translate',
     'toastr',
     'ngAnimate',
+    'ui.router',
+    'ui.bootstrap',
 
     'constants',
     'services',
+    'directives',
 
     'mrclient.login',
     'mrclient.logout',
     'mrclient.profile',
     'mrclient.search',
-    'mrclient.modals'
+    'mrclient.modals',
+    'mrclient.unsubscribe'
 ])
-    .config(['$locationProvider', '$routeProvider', '$httpProvider', 'RestangularProvider',
-        function($locationProvider, $routeProvider, $httpProvider, $cookieStore, RestangularProvider, ENVIRONMENT) {
-            
-            $locationProvider.hashPrefix('!');
+    .config(['$locationProvider', '$routeProvider', '$httpProvider', 'RestangularProvider', 'ENVIRONMENT',
+        function($locationProvider, $routeProvider, $httpProvider, RestangularProvider, ENVIRONMENT) {
     
             $routeProvider.otherwise({redirectTo: '/login'});
     
@@ -33,39 +36,33 @@ angular.module('mrclient', [
     
             RestangularProvider.setBaseUrl(ENVIRONMENT.LOCAL);
 
-            RestangularProvider.setDefaultHeaders({'Cookie': 'token=' + $cookieStore.get('token')});
-    
-            $locationProvider.html5Mode(true);
-    
             $httpProvider.interceptors.push('authInterceptor');
     //        $httpProvider.interceptors.push('progressBarInterceptor');
     }])
 
-    .factory('authInterceptor', function ($rootScope, $cookieStore, $q, $location, $window, AUTH_EVENTS) {
+    .factory('authInterceptor', function ($rootScope, $cookies, $q, $location, AUTH_EVENTS) {
 
         function isOnPage(page) {
 
-            return $window.location.pathname.indexOf(page) === -1;
+            return $location.path().indexOf(page) === -1;
         }
 
         return {
-            // Add authorization token to headers
             request: function (config) {
 
                 config.headers = config.headers || {};
 
                 try {
 
-                    if ($cookieStore.get('token')) {
+                    if ($cookies.get('mr-token')) {
 
-                        config.headers['token'] = $cookieStore.get('token');
-                        config.headers['Cookie'] = 'token=' + $cookieStore.get('token');
+                        config.headers['Authorization'] = 'Bearer ' + $cookies.get('mr-token');
                     }
                 } catch (err) {
 
                     if (isOnPage('login') && isOnPage('logout')) {
 
-                        $cookieStore.remove('token');
+                        $cookies.remove('mr-token');
                         $location.path('/login');
                     }
                 }
@@ -86,7 +83,7 @@ angular.module('mrclient', [
         };
     })
 
-    .run(function ($rootScope, $window, $state, $timeout, $translate, 
+    .run(function ($rootScope, $state, $timeout, $translate,
                    $stateParams, $filter, UserModel, AUTH_EVENTS) {
 
         // Redirect to login if route requires auth and you're not logged in
@@ -113,7 +110,7 @@ angular.module('mrclient', [
         });
     })
 
-    .controller('AppCtrl', function ($rootScope, $location, $window, $cookieStore, $timeout,
+    .controller('AppCtrl', function ($rootScope, $location, $timeout,
                                      toastr, UserModel, AUTH_EVENTS) {
 
         function redirectToLogin() {

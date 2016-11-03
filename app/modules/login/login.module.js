@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('mrclient.login', [])
+angular.module('mrclient.login', ['constants'])
 
-    .config(['$routeProvider', function($routeProvider, USER_ROLES) {
+    .config(['$routeProvider', 'USER_ROLES', function($routeProvider, USER_ROLES) {
       
         $routeProvider.when('/login', {
             templateUrl: 'modules/login/login.html',

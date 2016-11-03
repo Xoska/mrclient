@@ -1,0 +1,41 @@
+<div class="page">
+
+    <section class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-heading-title">Unsubscribe</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-10">
+                    <form class="form-horizontal ng-pristine ng-valid" role="form" name="unsubscribeForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="unsubscribeForm.reason.$invalid? 'color-danger' : ''">
+                                Why do you want to unsubscribe :
+                            </label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="reason"
+                                       ng-class="unsubscribeForm.username.$invalid ? 'ui-select-danger' : ''"
+                                       name="reason" ng-model="unsubscribe.reason"
+                                       maxlength="128" required/>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="col-sm-8">
+
+                                <input type="submit"  ng-disabled="unsubscribeForm.$invalid"
+                                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
+                                       ng-click="submit()"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-default" ng-click="leave()">Cancel</button>
+    </section>
+</div>

@@ -2,7 +2,7 @@
 
 angular.module('mrclient.logout', [])
 
-    .config(['$routeProvider', function($routeProvider, USER_ROLES) {
+    .config(['$routeProvider', 'USER_ROLES', function($routeProvider, USER_ROLES) {
       
         $routeProvider.when('/logout', {
             templateUrl: 'modules/logout/logout.html',

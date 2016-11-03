@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mrclient.search')
+angular.module('services')
     .service('ChatService', function ($q, Restangular) {
 
         function sendPost(idRoom, post) {
@@ -8,7 +8,13 @@ angular.module('mrclient.search')
             return Restangular.all('chat/post', idRoom).post(post);
         }
 
+        function leaveRoom(idRoom) {
+
+            return Restangular.all('chat/leave', idRoom).get();
+        }
+
         return {
-            sendPost: sendPost
+            sendPost: sendPost,
+            leaveRoom: leaveRoom
         };
     });

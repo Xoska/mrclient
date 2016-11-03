@@ -20,7 +20,7 @@
                                 <input type="text" class="form-control"
                                        ng-class="loginForm.username.$invalid ? 'ui-select-danger' : ''"
                                        name="username" ng-model="credentials.username"
-                                       maxlength="50" required/>
+                                       maxlength="64" required/>
                             </div>
                         </div>
 
@@ -31,10 +31,10 @@
                             </label>
 
                             <div class="col-sm-8">
-                                <input type="text" class="form-control"
+                                <input type="password" class="form-control"
                                        ng-class="loginForm.password.$invalid ? 'ui-select-danger' : ''"
                                        name="password" ng-model="credentials.password" type="password"
-                                       maxlength="50" required/>
+                                       maxlength="64" required/>
                             </div>
                         </div>
 

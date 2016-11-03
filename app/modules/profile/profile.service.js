@@ -5,7 +5,7 @@ angular.module('mrclient.profile')
 
         function getProfile(idProfile) {
 
-            return Restangular.one('profiles', idProfile).get();
+            return Restangular.one('profile', idProfile).get();
         }
 
         function updateProfile(profile) {
@@ -15,12 +15,12 @@ angular.module('mrclient.profile')
 
         function createProfile(profile) {
 
-            return Restangular.all('profiles').post(profile);
+            return Restangular.all('profile').post(profile);
         }
 
         function deleteProfile(idProfile) {
 
-            return Restangular.one('profiles', idProfile).remove();
+            return Restangular.one('profile', idProfile).remove();
         }
 
         return {

@@ -1,11 +1,29 @@
 'use strict';
 
 angular.module('mrclient.profile')
-    .controller('ProfileCtrl', function ($scope, toastr, ProfileService, AuthService, MeetRouletteService, UserModel) {
+    .controller('ProfileCtrl', function ($scope, toastr, ProfileService, AuthService,
+                                         MeetRouletteService, UserModel, ERRORS_CODE, LABELS) {
 
-        var action = 'createProfile';
+        function _setProfile(profile) {
+
+            profile.password = null;
+            profile.birthdayDate = new Date(profile.birthdayDate);
+
+            $scope.profile = profile;
+        }
 
         function _initializeProfile() {
+
+            var states = {
+                create: {
+                    title: 'Create Profile',
+                    action: 'createProfile'
+                },
+                update: {
+                    title: 'Manage Profile',
+                    action: 'updateProfile'
+                }
+            };
 
             $scope.profile = {
                 idProfile: null,
@@ -27,19 +45,23 @@ angular.module('mrclient.profile')
 
             var currentUser = UserModel.getCurrentUser();
 
-            if (UserModel.getCurrentUser() != null) {
+            if ($scope.isLoggedIn) {
+
+                $scope.state = states.update;
 
                 ProfileService.getProfile(currentUser.idProfile).then(
-                    function (profile) {
+                    function(profile) {
 
-                        $scope.profile = profile;
-                        profile.password = null;
-                        action = 'updateProfile';
+                        _setProfile(profile);
                     },
                     function(response) {
 
                         toastr.error('Error while getting the profile', 'Error');
                     });
+            }
+            else {
+
+                $scope.state = states.create;
             }
         }
         
@@ -58,9 +80,9 @@ angular.module('mrclient.profile')
                 });
         }
 
-        function _initializeStates() {
+        function _initializeStates(idCountry) {
 
-            MeetRouletteService.getStates($scope.profile.idCountry).then(
+            MeetRouletteService.getStates(idCountry).then(
                 function (states) {
 
                     $scope.states = states;
@@ -71,9 +93,9 @@ angular.module('mrclient.profile')
                 });
         }
 
-        function _initializeCities() {
+        function _initializeCities(idState) {
 
-            MeetRouletteService.getCities($scope.profile.idState).then(
+            MeetRouletteService.getCities(idState).then(
                 function (cities) {
 
                     $scope.cities = cities;
@@ -99,12 +121,45 @@ angular.module('mrclient.profile')
                 });
         }
 
+        function _setCurrentDateFormat() {
+/*
+            function _AddZeroBuffer(number) {
+
+                if (number < 10) {
+
+                    number = '0' + number;
+                }
+
+                return number;
+            }
+
+            var today = new Date();
+
+            var dd = _AddZeroBuffer(today.getDate());
+            var mm = _AddZeroBuffer(today.getMonth() + 1);
+            var yyyy = today.getFullYear();
+*/
+            var actualDate = new Date();
+            var minDate = new Date(actualDate.getFullYear() - 16, actualDate.getMonth(), actualDate.getDay());
+            var maxDate = new Date(actualDate.getFullYear() - 99, actualDate.getMonth(), actualDate.getDay());
+
+            $scope.maxDate = maxDate.toISOString();
+            $scope.minDate = minDate.toISOString();
+
+    //        $scope.maxDate = (yyyy - 16) + '-' + mm + '-' + dd;
+     //       $scope.minDate = (yyyy - 99) + '-' + mm + '-' + dd;
+        }
+
         function _initialize() {
 
-            $scope.error = '';
+            $scope.isLoggedIn = UserModel.isAuthenticated();
 
             $scope.cities = null;
             $scope.states = null;
+
+            $scope.LABELS = LABELS;
+
+            _setCurrentDateFormat();
 
             _initializeProfile();
             _initializeCountries();
@@ -113,34 +168,52 @@ angular.module('mrclient.profile')
         
         $scope.submit = function() {
 
-            ProfileService[action]($scope.profile).then(
+            ProfileService[$scope.state.action]($scope.profile).then(
                 function (profile) {
 
-                    $scope.profile = profile;
+                    if ($scope.isLoggedIn) {
 
-                    toastr.success('Profile was submitted successfully', 'Success');
+                        _setProfile(profile);
+
+                        toastr.success('Profile was updated successfully', 'Success');
+                    }
+                    else {
+
+                        toastr.success('Profile was created successfully', 'Success');
+
+                        _initialize();
+                    }
                 }, 
                 function(response) {
 
                     var error = 'Error while submitting the profile. ';
 
-                    if (response.data === 'USERNAME_ALREADY_EXIST') {
+                    if (response.data === ERRORS_CODE.USERNAME_ALREADY_EXIST) {
 
                         error += "Username already exist";
+                    }
+                    else if (response.data === ERRORS_CODE.PROFILE_INVALID) {
+
+                        error += "Profile is invalid";
                     }
 
                     toastr.error(error, 'Error');
                 });
         };
 
-        $scope.updateSelectCountry = function() {
+        $scope.updateSelectCountry = function(idCountry) {
 
-            _initializeStates();
+            $scope.cities = null;
+            $scope.states = null;
+
+            _initializeStates(idCountry);
         };
 
-        $scope.updateSelectState = function() {
+        $scope.updateSelectState = function(idState) {
 
-            _initializeCities();
+            $scope.cities = null;
+
+            _initializeCities(idState);
         };
 
         _initialize();

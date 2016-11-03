@@ -25,8 +25,31 @@ angular.module('constants', [])
 
     .constant('ENVIRONMENT', {
         LOCAL: 'http://localhost:8080/'
-    });
+    })
 
+    .constant('TYPE_POST', {
+        MESSAGE: 'MESSAGE',
+        NOTIFICATION_ENTER_ROOM: 'NOTIFICATION_ENTER_ROOM',
+        NOTIFICATION_LEAVE_ROOM: 'NOTIFICATION_LEAVE_ROOM'
+    })
+
+    .constant('ERRORS_CODE', {
+        USERNAME_ALREADY_EXIST: 'USERNAME_ALREADY_EXIST',
+        INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+        PROFILE_INVALID: 'PROFILE_INVALID'
+    })
+
+    .constant('LABELS', {
+        GOAL_FRIENDSHIP: 'Friendship',
+        GOAL_DATING: 'Dating',
+        SEX_MALE: 'Male',
+        SEX_FEMALE: 'Female',
+        SEX_TRANSGENDER: 'Transgender',
+        ANY: 'Any',
+        MEMBER: 'Member',
+        PRIVILEGED_MEMBER: 'Privileged Member',
+        ADMINISTRATOR: 'Administrator'
+    });
 
 
 

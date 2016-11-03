@@ -2,7 +2,7 @@
 
 angular.module('mrclient.profile', [])
 
-    .config(['$routeProvider', function($routeProvider, USER_ROLES) {
+    .config(['$routeProvider', 'USER_ROLES', function($routeProvider, USER_ROLES) {
       
         $routeProvider.when('/profile', {
             templateUrl: 'modules/profile/profile.html',

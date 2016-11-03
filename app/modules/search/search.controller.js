@@ -2,13 +2,13 @@
 
 angular.module('mrclient.search')
     .controller('SearchCtrl', function ($scope, toastr, HelperService,
-                                        ChatModalService, SearchService, MeetRouletteService) {
+                                        ChatModalService, SearchService, MeetRouletteService, LABELS) {
 
-        function _addAnyToList(list, id, name) {
+        function _addLabelToList(list, id, name, label) {
 
             var anyElement = {};
             anyElement[id] = 0;
-            anyElement[name] = 'Any';
+            anyElement[name] = label;
 
             list.unshift(anyElement);
 
@@ -22,37 +22,37 @@ angular.module('mrclient.search')
             MeetRouletteService.getCountries().then(
                 function (countries) {
 
-                    $scope.countries = _addAnyToList(countries, 'idCountry', 'name');
+                    $scope.countries = _addLabelToList(countries, 'idCountry', 'name', 'Wherever');
                 },
                 function(response) {
 
-                    $scope.error = "Error while getting the countries.";
+                    toastr.error('Error while getting the countries', 'Error');
                 });
         }
 
-        function _initializeStates() {
+        function _initializeStates(idCountry) {
 
-            MeetRouletteService.getStates($scope.profile.idCountry).then(
+            MeetRouletteService.getStates(idCountry).then(
                 function (states) {
 
-                    $scope.states = _addAnyToList(states, 'idState', 'name');
+                    $scope.states = _addLabelToList(states, 'idState', 'name', 'Wherever');
                 },
                 function(response) {
 
-                    $scope.error = "Error while getting the states.";
+                    toastr.error('Error while getting the states', 'Error');
                 });
         }
 
-        function _initializeCities() {
+        function _initializeCities(idState) {
 
-            MeetRouletteService.getCities($scope.profile.idState).then(
+            MeetRouletteService.getCities(idState).then(
                 function (cities) {
 
-                    $scope.cities = _addAnyToList(cities, 'idCity', 'name');
+                    $scope.cities = _addLabelToList(cities, 'idCity', 'name', 'Wherever');
                 },
                 function(response) {
 
-                    $scope.error = "Error while getting the cities.";
+                    toastr.error('Error while getting the cities', 'Error');
                 });
         }
 
@@ -63,11 +63,11 @@ angular.module('mrclient.search')
             MeetRouletteService.getSexes().then(
                 function (sexes) {
 
-                    $scope.sexes = _addAnyToList(sexes, 'idSex', 'name');
+                    $scope.sexes = _addLabelToList(sexes, 'idSex', 'name', 'ANY');
                 },
                 function(response) {
 
-                    $scope.error = "Error while getting the sexes.";
+                    toastr.error('Error while getting the sexes', 'Error');
                 });
         }
 
@@ -88,8 +88,6 @@ angular.module('mrclient.search')
 
         function _initialize() {
 
-            $scope.error = '';
-
             $scope.search = {
                 idSex: null,
                 idCountry: null,
@@ -99,6 +97,8 @@ angular.module('mrclient.search')
                 ageMin: null,
                 ageMax: null
             };
+
+            $scope.LABELS = LABELS;
 
             $scope.citiesSettings = {
                 displayProp: 'name',
@@ -125,14 +125,25 @@ angular.module('mrclient.search')
                 });
         };
 
-        $scope.updateSelectCountry = function() {
+        $scope.updateSelectCountry = function(idCountry) {
 
-            _initializeStates();
+            $scope.cities = null;
+            $scope.states = null;
+
+            if (idCountry !== 0) {
+
+                _initializeStates(idCountry);
+            }
         };
 
-        $scope.updateSelectState = function() {
+        $scope.updateSelectState = function(idState) {
 
-            _initializeCities();
+            $scope.cities = null;
+
+            if (idState !== 0) {
+
+                _initializeCities(idState);
+            }
         };
 
         _initialize();

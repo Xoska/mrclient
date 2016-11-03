@@ -10,9 +10,9 @@
             <span>{{ username }}</span>
         </p>
 
-        <p ng-repeat="post in posts | orderBy:'time':true" class="message">
-            <time>[{{ post.time | date:'HH:mm' }}]</time>
-            <span>{{ post.username }} : {{post.content}}</span>
+        <p ng-repeat="post in post" class="message">
+            <time>[{{ post.time }}]</time>
+            <span>{{ post.username }}{{post.content}}</span>
         </p>
 
         <div class="row">
@@ -44,6 +44,6 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-default" ng-click="cancel()">{{ ::LABELS.CANCEL }}</button>
+        <button class="btn btn-default" ng-click="leave()">Leave Room</button>
     </div>
 </script>

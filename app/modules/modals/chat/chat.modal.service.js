@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('mrclient.modals')
-    .factory('ChatModalService', function ($modal) {
+    .factory('ChatModalService', function ($uibModal) {
 
         function open(options) {
 
-            var modal = $modal.open({
+            var modal = $uibModal.open({
                 templateUrl: 'chatModal.html',
                 controller: 'ChatModalCtrl',
                 size: 'lg',

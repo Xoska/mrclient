@@ -18,14 +18,14 @@
                             <div class="col-sm-8">
                                 <span class="ui-select">
                                     <select ng-options="country.idCountry as country.name for country in countries "
-                                            ng-model="search.idCountry" ng-change="updateSelectCountry()"
+                                            ng-model="search.idCountry" ng-change="updateSelectCountry(search.idCountry)"
                                             name="country">
                                     </select>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" ng-if="states.length > 0">
                             <label class="col-sm-2 control-label">
                                 State :
                             </label>
@@ -33,14 +33,14 @@
                             <div class="col-sm-8">
                                 <span class="ui-select">
                                     <select ng-options="state.idState as state.name for state in states "
-                                            ng-model="search.idState" ng-change="updateSelectState()"
+                                            ng-model="search.idState" ng-change="updateSelectState(search.idState)"
                                             name="state">
                                     </select>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" ng-if="cities.length > 0">
                             <label class="col-sm-2 control-label"
                                    ng-class="searchForm.city.$invalid? 'color-danger' : ''">
                                 Cities :
@@ -65,7 +65,7 @@
 
                             <div class="col-sm-8">
                                 <span class="ui-select">
-                                    <select ng-options="sex.idSex as sex.name for sex in sexes "
+                                    <select ng-options="sex.idSex as LABELS[sex.name] for sex in sexes "
                                             ng-model="search.idSex" name="sex">
                                     </select>
                                 </span>
@@ -80,7 +80,7 @@
 
                             <div class="col-sm-8">
                                 <span class="ui-select">
-                                    <select ng-options="goal.idGoal as goal.name for goal in goals "
+                                    <select ng-options="goal.idGoal as LABELS[goal.name] for goal in goals "
                                             ng-model="search.idGoal" name="goal" required>
                                     </select>
                                 </span>
@@ -97,7 +97,7 @@
                                 <input type="number" class="form-control"
                                        ng-class="searchForm.ageMin.$invalid ? 'ui-select-danger' : ''"
                                        name="ageMin" ng-model="search.ageMin" ng-min="16"
-                                       maxlength="3" required/>
+                                       maxlength="2" required/>
                             </div>
                         </div>
 
@@ -111,7 +111,7 @@
                                 <input type="number" class="form-control"
                                        ng-class="searchForm.ageMax.$invalid ? 'ui-select-danger' : ''"
                                        name="ageMax" ng-model="search.ageMax"
-                                       maxlength="3" required/>
+                                       maxlength="2" required/>
                             </div>
                         </div>
 

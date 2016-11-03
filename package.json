@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "sockjs-client": "~1.1.1",
-    "eventsource": "~0.2.1"
+    "eventsource": "~0.2.1",
+    "angular-ui-router": "~0.3.1"
   }
 }

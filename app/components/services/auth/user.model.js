@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('services')
-    .factory('UserModel', function ($cookieStore, HelperService) {
+    .factory('UserModel', function ($cookies, HelperService, USER_ROLES) {
 
         var currentUser = null;
 
@@ -12,24 +12,25 @@ angular.module('services')
 
         function setCurrentUser(session) {
 
-            $cookieStore.put('token', session.name);
+            $cookies.put('mr-token', session.name);
 
             currentUser = session;
         }
 
         function isAuthenticated() {
 
-            return currentUser.idProfile && $cookieStore.get('token');
+            return currentUser && $cookies.get('mr-token');
         }
 
         function isAuthorized(authorizedRoles) {
-            
-            return (isAuthenticated() && authorizedRoles.indexOf(currentUser.role) !== -1);
+
+            return authorizedRoles.indexOf(USER_ROLES.ANONYMOUS) !== -1
+                || (isAuthenticated() && authorizedRoles.indexOf(currentUser.role) !== -1);
         }
 
         function destroyUser() {
 
-            $cookieStore.remove('token');
+            $cookies.remove('mr-token');
 
             currentUser = null;
 

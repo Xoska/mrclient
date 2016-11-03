@@ -1,19 +1,23 @@
 'use strict';
 
 angular.module('mrclient.login')
-    .controller('LoginCtrl', function ($rootScope, $scope, toastr, HelperService, AuthService, UserModel, AUTH_EVENTS) {
+    .controller('LoginCtrl', function ($rootScope, $scope, toastr, HelperService,
+                                       AuthService, UserModel, AUTH_EVENTS, ERRORS_CODE) {
 
         if (UserModel.isAuthenticated()) {
 
             HelperService.redirectTo('search');
         }
 
-        $scope.credentials = {
-            username: null,
-            password: null
-        };
+        function _initialize() {
 
-        $scope.error = '';
+            $scope.credentials = {
+                username: null,
+                password: null
+            };
+
+            $scope.error = '';
+        }
 
         $scope.submit = function() {
 
@@ -31,12 +35,14 @@ angular.module('mrclient.login')
 
                     var error = "Error while logging in. ";
 
-                    if (response.data === 'INVALID_CREDENTIALS') {
+                    if (response.data === ERRORS_CODE.INVALID_CREDENTIALS) {
 
                         error += 'Invalid credentials';
                     }
 
-                    toastr.error(error), 'Error';
+                    toastr.error(error, 'Error');
                 });
         };
+
+        _initialize();
     });

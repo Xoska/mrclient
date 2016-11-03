@@ -1,22 +1,46 @@
 'use strict';
 
 angular.module('mrclient.modals')
-    .controller('ChatModalCtrl', function ($scope, $modalInstance, ChatService, HelperService,
-                                           UserModel, room, toastr, ENVIRONMENT) {
+    .controller('ChatModalCtrl', function ($scope, $uibModalInstance, ChatService, HelperService,
+                                           UserModel, room, toastr, ENVIRONMENT, TYPE_POST) {
 
-        function _processEvent(post) {
+        var source = null;
 
-            if ($scope.usernames.length < 2
-                && HelperService.findOccurrencesInArray($scope.usernames, post.username) === 0) {
+        function _getTimeFormat() {
 
-                toastr.success('Someone has joined your room!', 'Information');
+            var time = new Date();
 
-                $scope.usernames.push(post.username);
-            }
-
-            $scope.posts.push(post);
+            return time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
         }
 
+        function _processEvent(post) {
+            
+            post.time = _getTimeFormat();
+
+            if (post.typePost === TYPE_POST.MESSAGE) {
+
+                post.content = ': ' + post.content;
+
+                $scope.posts.push(post);
+            }
+            else if (post.typePost === TYPE_POST.NOTIFICATION_ENTER_ROOM) {
+
+                post.content = ' has joined your room!';
+
+                toastr.success(post.username + post.content, 'Information');
+
+                $scope.usernames.push(post.username);
+                $scope.posts.push(post);
+            }
+            else if (post.typePost === TYPE_POST.NOTIFICATION_LEAVE_ROOM) {
+
+                post.content = ' just left the room';
+
+                toastr.info(post.username + post.content, 'Information');
+
+                $scope.posts.push(post);
+            }
+        }
 
         function _notifyEvent(event) {
 
@@ -45,13 +69,13 @@ angular.module('mrclient.modals')
                 idPost: null,
                 idProfile: UserModel.getCurrentUser().idProfile,
                 username: UserModel.getCurrentUser().username,
-                date: null,
-                content: null
+                content: null,
+                typePost: TYPE_POST.NOTIFICATION_ENTER_ROOM
             };
 
             if (typeof (EventSource) !== "undefined") {
 
-                var source = new EventSource(ENVIRONMENT.LOCAL + 'chat/join/' + room.id);
+                source = new EventSource(ENVIRONMENT.LOCAL + 'chat/join/' + room.id);
 
                 source.onmessage = _notifyEvent;
 
@@ -62,14 +86,24 @@ angular.module('mrclient.modals')
             }
         }
 
-        $scope.cancel = function () {
+        $scope.leave = function () {
+
+            $scope.post.typePost = TYPE_POST.NOTIFICATION_LEAVE_ROOM;
+            ChatService.sendPost(room.idRoom, $scope.post);
+
+            if (source) {
+
+                source.close();
+            }
+
+            ChatService.leaveRoom(room.idRoom);
 
             $modalInstance.dismiss();
         };
 
         $scope.submit = function () {
 
-            $scope.post.date = new Date();
+            $scope.post.typePost = TYPE_POST.MESSAGE;
 
             ChatService.sendPost(room.idRoom, $scope.post);
 

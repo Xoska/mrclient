@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('services')
-    .service('HelperService', function ($window, $location) {
+    .service('HelperService', function ($location) {
 
         function isOnPage(page) {
 
-            return $window.location.pathname.indexOf(page) === -1;
+            return $location.path().indexOf(page) !== -1;
         }
 
         function redirectTo(page) {

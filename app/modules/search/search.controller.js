@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('mrclient.search')
-    .controller('SearchCtrl', function ($scope, toastr, HelperService,
-                                        ChatModalService, SearchService, MeetRouletteService, LABELS) {
+    .controller('SearchCtrl', function ($scope, toastr, HelperService, ChatModalService, LazyLoadingService,
+                                        SearchService, MeetRouletteService, LABELS, ERRORS_CODE, UserModel) {
+
+        var idProfile = UserModel.getCurrentUser().idProfile;
 
         function _addLabelToList(list, id, name, label) {
 
@@ -17,17 +19,7 @@ angular.module('mrclient.search')
 
         function _initializeCountries() {
 
-            $scope.countries = null;
-
-            MeetRouletteService.getCountries().then(
-                function (countries) {
-
-                    $scope.countries = _addLabelToList(countries, 'idCountry', 'name', 'Wherever');
-                },
-                function(response) {
-
-                    toastr.error('Error while getting the countries', 'Error');
-                });
+            $scope.countries = _addLabelToList(LazyLoadingService.getCountries(), 'idCountry', 'name', 'Wherever');
         }
 
         function _initializeStates(idCountry) {
@@ -58,32 +50,12 @@ angular.module('mrclient.search')
 
         function _initializeSexes() {
 
-            $scope.sexes = null;
-
-            MeetRouletteService.getSexes().then(
-                function (sexes) {
-
-                    $scope.sexes = _addLabelToList(sexes, 'idSex', 'name', 'ANY');
-                },
-                function(response) {
-
-                    toastr.error('Error while getting the sexes', 'Error');
-                });
+            $scope.sexes = _addLabelToList(LazyLoadingService.getSexes(), 'idSex', 'name', 'ANY');
         }
 
         function _initializeGoals() {
 
-            $scope.goals = null;
-
-            MeetRouletteService.getGoals().then(
-                function (goals) {
-
-                    $scope.goals = goals;
-                },
-                function(response) {
-
-                    $scope.error = "Error while getting the goals.";
-                });
+            $scope.goals = LazyLoadingService.getGoals();
         }
 
         function _initialize() {
@@ -98,11 +70,15 @@ angular.module('mrclient.search')
                 ageMax: null
             };
 
+            $scope.selectedCities = [];
+
             $scope.LABELS = LABELS;
 
             $scope.citiesSettings = {
                 displayProp: 'name',
-                idProp: 'idCity'
+                idProp: 'idCity',
+                scrollableHeight: '200px',
+                scrollable: true
             };
 
             _initializeCountries();
@@ -112,16 +88,23 @@ angular.module('mrclient.search')
         
         $scope.submit = function() {
 
-            $scope.search.idsCity = _.pluck($scope.search.idsCity, 'idCity');
+            $scope.search.idsCity = _.pluck($scope.selectedCities, 'id');
 
-            SearchService.search($scope.search).then(
+            SearchService.search(idProfile, $scope.search).then(
                 function (room) {
 
                     ChatModalService.open({room: room});
                 }, 
                 function(response) {
 
-                    toastr.error('Error while searching for a profile', 'Error');
+                    var error = 'Error while searching for someone. ';
+
+                    if (response.data === ERRORS_CODE.PROFILE_ALREADY_QUEUED) {
+
+                        error += "You are already queued";
+                    }
+
+                    toastr.error(error, 'Error');
                 });
         };
 

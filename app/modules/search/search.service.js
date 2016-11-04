@@ -3,9 +3,9 @@
 angular.module('mrclient.search')
     .service('SearchService', function ($q, Restangular) {
 
-        function search(search) {
+        function search(idProfile, search) {
 
-            return Restangular.all('chat/search').post(search);
+            return Restangular.all('chat/search/' + idProfile).post(search);
         }
 
         return {

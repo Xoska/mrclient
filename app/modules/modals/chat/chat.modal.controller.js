@@ -96,7 +96,7 @@ angular.module('mrclient.modals')
                 source.close();
             }
 
-            ChatService.leaveRoom(room.idRoom);
+            ChatService.leaveRoom(room.idRoom, UserModel.getCurrentUser().idProfile);
 
             $modalInstance.dismiss();
         };

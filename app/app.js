@@ -11,6 +11,7 @@ angular.module('mrclient', [
     'ngAnimate',
     'ui.router',
     'ui.bootstrap',
+    'angularjs-dropdown-multiselect',
 
     'constants',
     'services',
@@ -111,7 +112,7 @@ angular.module('mrclient', [
     })
 
     .controller('AppCtrl', function ($rootScope, $location, $timeout,
-                                     toastr, UserModel, AUTH_EVENTS) {
+                                     LazyLoadingService, toastr, UserModel, AUTH_EVENTS) {
 
         function redirectToLogin() {
 
@@ -148,6 +149,8 @@ angular.module('mrclient', [
 
             window.scrollTo(0, 0);
         });
+
+        LazyLoadingService.lazyLoadData();
 
         function getSubdomain(segments) {
 

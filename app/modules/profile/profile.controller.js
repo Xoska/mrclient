@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mrclient.profile')
-    .controller('ProfileCtrl', function ($scope, toastr, ProfileService, AuthService,
+    .controller('ProfileCtrl', function ($scope, toastr, ProfileService, AuthService, LazyLoadingService,
                                          MeetRouletteService, UserModel, ERRORS_CODE, LABELS) {
 
         function _setProfile(profile) {
@@ -16,11 +16,11 @@ angular.module('mrclient.profile')
 
             var states = {
                 create: {
-                    title: 'Create Profile',
+                    title: 'Create your profile',
                     action: 'createProfile'
                 },
                 update: {
-                    title: 'Manage Profile',
+                    title: 'Manage you profile',
                     action: 'updateProfile'
                 }
             };
@@ -67,17 +67,7 @@ angular.module('mrclient.profile')
         
         function _initializeCountries() {
 
-            $scope.countries = null;
-
-            MeetRouletteService.getCountries().then(
-                function (countries) {
-
-                    $scope.countries = countries;
-                },
-                function(response) {
-
-                    toastr.error('Error while getting the countries', 'Error');
-                });
+            $scope.countries = LazyLoadingService.getCountries();
         }
 
         function _initializeStates(idCountry) {
@@ -108,46 +98,17 @@ angular.module('mrclient.profile')
 
         function _initializeSexes() {
 
-            $scope.sexes = null;
-
-            MeetRouletteService.getSexes().then(
-                function (sexes) {
-
-                    $scope.sexes = sexes;
-                },
-                function(response) {
-
-                    toastr.error('Error while getting the sexes', 'Error');
-                });
+            $scope.sexes = LazyLoadingService.getSexes();
         }
 
         function _setCurrentDateFormat() {
-/*
-            function _AddZeroBuffer(number) {
 
-                if (number < 10) {
-
-                    number = '0' + number;
-                }
-
-                return number;
-            }
-
-            var today = new Date();
-
-            var dd = _AddZeroBuffer(today.getDate());
-            var mm = _AddZeroBuffer(today.getMonth() + 1);
-            var yyyy = today.getFullYear();
-*/
             var actualDate = new Date();
-            var minDate = new Date(actualDate.getFullYear() - 16, actualDate.getMonth(), actualDate.getDay());
-            var maxDate = new Date(actualDate.getFullYear() - 99, actualDate.getMonth(), actualDate.getDay());
+            var maxDate = new Date(actualDate.getFullYear() - 16, actualDate.getMonth(), actualDate.getDay());
+            var minDate = new Date(actualDate.getFullYear() - 99, actualDate.getMonth(), actualDate.getDay());
 
             $scope.maxDate = maxDate.toISOString();
             $scope.minDate = minDate.toISOString();
-
-    //        $scope.maxDate = (yyyy - 16) + '-' + mm + '-' + dd;
-     //       $scope.minDate = (yyyy - 99) + '-' + mm + '-' + dd;
         }
 
         function _initialize() {

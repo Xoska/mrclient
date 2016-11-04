@@ -10,7 +10,7 @@ angular.module('mrclient.profile')
 
         function updateProfile(profile) {
 
-            return profile.put();
+            return Restangular.one('profile', profile.idProfile).customPUT(profile);
         }
 
         function createProfile(profile) {

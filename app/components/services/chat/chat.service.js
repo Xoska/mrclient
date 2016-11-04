@@ -8,9 +8,13 @@ angular.module('services')
             return Restangular.all('chat/post', idRoom).post(post);
         }
 
-        function leaveRoom(idRoom) {
+        function leaveRoom(idRoom, idProfile) {
 
-            return Restangular.all('chat/leave', idRoom).get();
+            var params = {
+                id_profile: idProfile
+            };
+
+            return Restangular.all('chat/leave', idRoom).get(params);
         }
 
         return {

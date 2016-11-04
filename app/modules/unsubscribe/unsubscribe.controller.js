@@ -10,10 +10,10 @@ angular.module('mrclient.unsubscribe')
 
         $scope.submit = function() {
 
-            ProfileService.deleteProfile(UserModel.idProfile).then(
+            ProfileService.deleteProfile(UserModel.getCurrentUser().idProfile).then(
                 function (response) {
 
-                    $timeout(HelperService.redirectTo(''), 3000);
+                    UserModel.destroyUser();
                 }, 
                 function(response) {
 

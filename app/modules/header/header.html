@@ -13,54 +13,52 @@
         <span class="icon-bar"></span>
     </div>
 
-    <div class="top-nav">
-        <ul class="nav-right pull-right list-unstyled">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Meet Roulette</a>
+        </div>
+        <div class="container-fluid">
+            <ul class="nav navbar-nav" ng-if="isLoggedIn()">
+                <li ng-class="isOnPage('profile') ? 'active' : ''">
+                    <a href="#/profile">
+                        <span>Manage your profile</span>
+                    </a>
+                </li>
+                <li ng-class="isOnPage('search') ? 'active' : ''">
+                    <a href="#/search">
+                        <span>Find Someone to Chat</span>
+                    </a>
+                </li>
+                <li ng-class="isOnPage('personality') ? 'active' : ''">
+                    <a href="#/personality">
+                        <span>Take a Personality Test</span>
+                    </a>
+                </li>
+                <li ng-class="isOnPage('unsubscribe') ? 'active' : ''">
+                    <a href="#/unsubscribe">
+                        <span>Unsubscribe</span>
+                    </a>
+                </li>
+                <li style="border-top: 1px solid #eeeeee;">
+                    <a href="#/logout">
+                        <i class="fa fa-sign-out"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
 
-            <li class="text-normal nav-profile dropdown" ng-if="isLoggedIn()" dropdown>
-                <ul class="menu dropdown-menu with-arrow pull-right">
-                    <li ng-class="isOnPage('profile') ? 'menu-active' : ''">
-                        <a href="#/profile">
-                            <span>Manage Profile</span>
-                        </a>
-                    </li>
-                    <li ng-class="isOnPage('search') ? 'menu-active' : ''">
-                        <a href="#/search">
-                            <span>Find Someone to Chat</span>
-                        </a>
-                    </li>
-                    <li ng-class="isOnPage('personality') ? 'menu-active' : ''">
-                        <a href="#/personality">
-                            <span>Take a Personality Test</span>
-                        </a>
-                    </li>
-                    <li ng-class="isOnPage('unsubscribe') ? 'menu-active' : ''">
-                        <a href="#/unsubscribe">
-                            <span>Unsubscribe</span>
-                        </a>
-                    </li>
-                    <li style="border-top: 1px solid #eeeeee;">
-                        <a href="#/logout">
-                            <i class="fa fa-sign-out"></i>
-                            <span>Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="text-normal nav-profile dropdown" ng-if="!isLoggedIn()" dropdown>
-                <ul class="menu dropdown-menu with-arrow pull-right">
-                    <li ng-class="isOnPage('login') ? 'menu-active' : ''">
-                        <a href="#/" target="_self">
-                            <span>Login</span>
-                        </a>
-                    </li>
-                    <li ng-class="isOnPage('profile') ? 'menu-active' : ''">
-                        <a href="#/profile" target="_self">
-                            <span>Subscribe</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+            <ul class="nav navbar-nav" ng-if="!isLoggedIn()">
+                <li ng-class="isOnPage('login') ? 'active' : ''">
+                    <a href="#/" target="_self">
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li ng-class="isOnPage('profile') ? 'active' : ''">
+                    <a href="#/profile" target="_self">
+                        <span>Subscribe!</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </header>

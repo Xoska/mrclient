@@ -5,6 +5,7 @@ angular.module('mrclient.modals')
                                            UserModel, room, toastr, ENVIRONMENT, TYPE_POST) {
 
         var source = null;
+        var username = UserModel.getCurrentUser().username;
 
         function _getTimeFormat() {
 
@@ -19,22 +20,21 @@ angular.module('mrclient.modals')
 
             if (post.typePost === TYPE_POST.MESSAGE) {
 
-                post.content = ': ' + post.content;
-
                 $scope.posts.push(post);
             }
             else if (post.typePost === TYPE_POST.NOTIFICATION_ENTER_ROOM) {
 
-                post.content = ' has joined your room!';
-
                 toastr.success(post.username + post.content, 'Information');
 
-                $scope.usernames.push(post.username);
+                post.content = 'I have just joined the room!';
+
+                _setTitleConversation(username, post.username);
+
                 $scope.posts.push(post);
             }
             else if (post.typePost === TYPE_POST.NOTIFICATION_LEAVE_ROOM) {
 
-                post.content = ' just left the room';
+                post.content = 'I just left the room';
 
                 toastr.info(post.username + post.content, 'Information');
 
@@ -42,24 +42,84 @@ angular.module('mrclient.modals')
             }
         }
 
-        function _notifyEvent(event) {
+        function _processErrorEventSource() {
 
-            var post = JSON.parse(event.data);
+            toastr.error('A problem occured while using the chat platform. Please try again.', 'Error');
 
-            _processEvent(post);
+            $scope.leave();
+        }
+
+        function _isConnectionOpen() {
+
+            return source.readyState === 1;
+        }
+
+        function _isConnectionPending() {
+
+            return source.readyState === 0;
+        }
+
+        function _setTitleWaiting () {
+
+            $scope.title = 'Waiting for someone to join the chat room...';
+        }
+
+        function _setTitleConversation (username1, username2) {
+
+            $scope.title = 'Conversation between ' + username1 + ' and ' + username2;
+        }
+
+
+        function _initializeConnectionSSE() {
+
+            if (typeof (EventSource) !== "undefined") {
+
+                source = new EventSource(ENVIRONMENT.LOCAL + 'chat/join/' + room.idRoom);
+
+                source.onmessage = function(event) {
+
+                    if (event.isTrusted) {
+
+                        var post = JSON.parse(event.data);
+
+                        _processEvent(post);
+                    }
+                };
+
+                source.onopen = function() {
+
+                    if (_isConnectionOpen() && username !== room.owner) {
+
+                        ChatService.sendPost(room.idRoom, $scope.post);
+                    }
+                    else {
+
+                        _processErrorEventSource();
+                    }
+                };
+
+                source.onerror = function() {
+
+                    _processErrorEventSource();
+                }
+            } else {
+
+                _processErrorEventSource();
+            }
         }
 
         function _initialize() {
 
-            $scope.usernames = [UserModel.username];
+            if (room.owner === username) {
 
-            if (room.owner === UserModel.getCurrentUser().username) {
+                _setTitleWaiting();
 
                 toastr.info('You were placed in the queue. Wait until we find a good match for you', 'Information');
             }
             else {
 
-                $scope.usernames.push(room.owner);
+                _setTitleConversation(username, room.owner);
+
                 toastr.info('Someone is already waiting in the room!', 'Information');
             }
 
@@ -73,41 +133,47 @@ angular.module('mrclient.modals')
                 typePost: TYPE_POST.NOTIFICATION_ENTER_ROOM
             };
 
-            if (typeof (EventSource) !== "undefined") {
-
-                source = new EventSource(ENVIRONMENT.LOCAL + 'chat/join/' + room.id);
-
-                source.onmessage = _notifyEvent;
-
-                ChatService.sendPost(room.idRoom, $scope.post);
-            } else {
-
-                toastr.error('A problem occured while initializing the chat platform', 'Error')
-            }
+            _initializeConnectionSSE();
         }
 
         $scope.leave = function () {
 
-            $scope.post.typePost = TYPE_POST.NOTIFICATION_LEAVE_ROOM;
-            ChatService.sendPost(room.idRoom, $scope.post);
+            if (_isConnectionOpen()) {
 
-            if (source) {
+                $scope.post.typePost = TYPE_POST.NOTIFICATION_LEAVE_ROOM;
+                ChatService.sendPost(room.idRoom, $scope.post);
+            }
+
+            if (_isConnectionPending() || _isConnectionOpen()) {
 
                 source.close();
             }
 
             ChatService.leaveRoom(room.idRoom, UserModel.getCurrentUser().idProfile);
 
-            $modalInstance.dismiss();
+            $uibModalInstance.dismiss();
         };
 
         $scope.submit = function () {
 
-            $scope.post.typePost = TYPE_POST.MESSAGE;
+            if (_isConnectionOpen()) {
 
-            ChatService.sendPost(room.idRoom, $scope.post);
+                $scope.post.typePost = TYPE_POST.MESSAGE;
 
-            $scope.post.content = null;
+                ChatService.sendPost(room.idRoom, $scope.post).then(
+                    function(response) {
+
+                        $scope.post.content = null;
+                    },
+                    function(response) {
+
+                        toastr.error('Error while posting a message', 'Error');
+                    });
+            }
+            else {
+
+                _processErrorEventSource();
+            }
         };
 
         _initialize();

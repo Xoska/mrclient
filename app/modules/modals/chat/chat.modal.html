@@ -1,49 +1,44 @@
 <script type="text/ng-template" id="chatModal.html">
-    <div class="modal-header">
-        <h3>
-            Chat
-        </h3>
-    </div>
-    <div class="modal-body">
 
-        <p ng-repeat="username in usernames" class="message">
-            <span>{{ username }}</span>
-        </p>
+        <div class="modal-header">
+            <h4>
+                {{ title }}
+            </h4>
+        </div>
 
-        <p ng-repeat="post in post" class="message">
-            <time>[{{ post.time }}]</time>
-            <span>{{ post.username }}{{post.content}}</span>
-        </p>
+        <div class="modal-body">
 
-        <div class="row">
-            <div class="col-md-12">
-                <form class="form-horizontal ng-pristine ng-valid" role="form" name="chatModalForm">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label"
-                               ng-class="profileForm.firstName.$invalid? 'color-danger' : ''">
-                            Content :
-                        </label>
+            <div class="message-wrap col-lg-8">
+                <div class="msg-wrap">
 
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control"
-                                   ng-class="post.content.$invalid ? 'ui-select-danger' : ''"
-                                   name="content" ng-model="post.content" required/>
-                        </div>
-
-                        <div class="text-center">
-                            <div class="col-sm-8">
-
-                                <input type="submit"  ng-disabled="chatModalForm.$invalid"
-                                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
-                                       ng-click="submit()"/>
+                    <span ng-repeat="post in posts" class="message">
+                        <div class="media msg">
+                            <div class="media-body">
+                                <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
+                                <h5 class="media-heading">{{ post.username }}</h5>
+                                <small class="col-lg-10">{{post.content}}</small>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default" ng-click="leave()">Leave Room</button>
-    </div>
+
+        <div class="modal-footer">
+
+            <div class="send-wrap">
+                    <textarea class="form-control" rows="3"
+                              ng-class="post.content.$invalid ? 'ui-select-danger' : ''"
+                              name="content" ng-model="post.content" required>
+                    </textarea>
+            </div>
+
+            <div>
+                <input type="submit"  ng-disabled="chatModalForm.$invalid"
+                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
+                       ng-click="submit()"/>
+
+                <button class="btn btn-default" ng-click="leave()">Leave Room</button>
+            </div>
+        </div>
 </script>

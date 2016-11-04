@@ -5,7 +5,7 @@ angular.module('services')
 
         function sendPost(idRoom, post) {
 
-            return Restangular.all('chat/post', idRoom).post(post);
+            return Restangular.all('chat/post/' + idRoom).post(post);
         }
 
         function leaveRoom(idRoom, idProfile) {

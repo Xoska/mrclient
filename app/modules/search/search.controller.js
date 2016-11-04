@@ -62,15 +62,15 @@ angular.module('mrclient.search')
 
             $scope.search = {
                 idSex: null,
-                idCountry: null,
-                idState: null,
-                idsCity: [],
+                idCountry: 0,
+                idState: 0,
+                idsCity: [0],
                 idGoal: null,
                 ageMin: null,
                 ageMax: null
             };
 
-            $scope.selectedCities = [];
+            $scope.selectedCities = [{id: 0}];
 
             $scope.LABELS = LABELS;
 

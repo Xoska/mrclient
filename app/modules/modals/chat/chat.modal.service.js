@@ -8,7 +8,7 @@ angular.module('mrclient.modals')
             var modal = $uibModal.open({
                 templateUrl: 'chatModal.html',
                 controller: 'ChatModalCtrl',
-                size: 'lg',
+                size: 'md',
                 backdrop: false,
                 resolve: {
                     room: function() {

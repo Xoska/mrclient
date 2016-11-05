@@ -24,7 +24,8 @@ angular.module('mrclient', [
     'mrclient.profile',
     'mrclient.search',
     'mrclient.modals',
-    'mrclient.unsubscribe'
+    'mrclient.unsubscribe',
+    'mrclient.personalityTest'
 ])
     .config(['$locationProvider', '$routeProvider', '$httpProvider', 'RestangularProvider', 'ENVIRONMENT',
         function($locationProvider, $routeProvider, $httpProvider, RestangularProvider, ENVIRONMENT) {

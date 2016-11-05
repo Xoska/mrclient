@@ -1,0 +1,166 @@
+<div class="page">
+
+    <section class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-heading-title">Personality Test</div>
+        </div>
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-10">
+                    <form class="form-horizontal ng-pristine ng-valid" role="form" name="personalityTestForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label pull-left"></label>
+
+                            <div class="col-sm-7">
+                                True
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                False
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I am the life of the party :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question1"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I feel comfortable around people :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question2"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I Am always prepared :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question3"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I get stressed out easily :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question4"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I am interested in people :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question5"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I start conversations :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question6"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I  am easily disturbed :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question7"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I have frequent mood swings :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question8"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I get irritated easily :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question9"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                I spend time reflecting on things :
+                            </label>
+
+                            <div class="col-sm-7">
+                                <input type="range" class="form-control" name="question1"
+                                       min="1" max="10" ng-model="personalityTest.question10"
+                                       ng-disabled="isDisabled"/>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="col-sm-7">
+
+                                <input type="submit"  ng-disabled="personalityTestForm.$invalid"
+                                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
+                                       ng-click="submit()"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>

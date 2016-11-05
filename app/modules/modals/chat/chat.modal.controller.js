@@ -5,7 +5,6 @@ angular.module('mrclient.modals')
                                            UserModel, room, toastr, ENVIRONMENT, TYPE_POST) {
 
         var source = null;
-        var username = UserModel.getCurrentUser().username;
 
         function _getTimeFormat() {
 
@@ -25,6 +24,17 @@ angular.module('mrclient.modals')
             $scope.posts.push(post);
         }
 
+        function _enterRoom(username) {
+
+            var post = {
+                username: username,
+                time: _getTimeFormat(),
+                typePost: TYPE_POST.NOTIFICATION_ENTER_ROOM
+            };
+
+            _pushMessageToChatbox(post);
+        }
+
         function _processEvent(post) {
             
             post.time = _getTimeFormat();
@@ -35,9 +45,11 @@ angular.module('mrclient.modals')
             }
             else if (post.typePost === TYPE_POST.NOTIFICATION_ENTER_ROOM) {
 
-                _setTitleConversation(username, post.username);
+                if ($scope.username !== post.username) {
 
-                _pushMessageToChatbox(post);
+                    $scope.interlocutor = post.username;
+                    _enterRoom($scope.interlocutor);
+                }
             }
             else if (post.typePost === TYPE_POST.NOTIFICATION_LEAVE_ROOM) {
 
@@ -67,11 +79,6 @@ angular.module('mrclient.modals')
             $scope.title = 'Waiting for someone to match your criterias...';
         }
 
-        function _setTitleConversation (username1, username2) {
-
-            $scope.title = 'Conversation between ' + username1 + ' and ' + username2;
-        }
-
         function _initializeConnectionSSE() {
 
             if (typeof (EventSource) !== "undefined") {
@@ -92,7 +99,7 @@ angular.module('mrclient.modals')
 
                 source.onopen = function() {
 
-                    if (_isConnectionOpen() && username !== room.owner) {
+                    if (_isConnectionOpen() && $scope.username !== room.owner) {
 
                         ChatService.sendPost(room.idRoom, $scope.post);
                     }
@@ -112,27 +119,23 @@ angular.module('mrclient.modals')
 
             $scope.posts = [];
 
-            if (room.owner === username) {
+            $scope.username = UserModel.getCurrentUser().username;
+            _enterRoom($scope.username);
+            
+            if (room.owner === $scope.username) {
 
                 _setTitleWaiting();
             }
             else {
 
-                _setTitleConversation(username, room.owner);
-
-                var post = {
-                    username: room.owner,
-                    time: _getTimeFormat(),
-                    typePost: TYPE_POST.NOTIFICATION_ENTER_ROOM
-                };
-
-                _pushMessageToChatbox(post);
+                $scope.interlocutor = room.owner;
+                _enterRoom($scope.interlocutor);
             }
 
             $scope.post = {
                 idPost: null,
                 idProfile: UserModel.getCurrentUser().idProfile,
-                username: UserModel.getCurrentUser().username,
+                username: $scope.username,
                 content: null,
                 typePost: TYPE_POST.NOTIFICATION_ENTER_ROOM
             };

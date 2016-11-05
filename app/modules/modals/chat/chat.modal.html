@@ -1,11 +1,10 @@
 <script type="text/ng-template" id="chatModal.html">
 
         <div class="modal-header">
-            <h4>
-                {{ title }}
-            </h4>
-
-            <div ng-if="posts.length === 0">
+            <div ng-if="posts.length < 2">
+                <h4>
+                    Waiting for someone to match your criterias...
+                </h4>
                 <h5>
                     You will be moved to a chat room once a match is found!
                 </h5>
@@ -15,9 +14,14 @@
 
                 <button class="btn btn-default" ng-click="leave()">Cancel</button>
             </div>
+            <div ng-if="posts.length > 1">
+                <h4>
+                    Discussion between {{ username }} and {{ interlocutor }}
+                </h4>
+            </div>
         </div>
 
-        <div ng-if="posts.length > 0">
+        <div ng-if="posts.length > 1">
 
             <div class="modal-body">
 
@@ -27,15 +31,18 @@
                         <span ng-repeat="post in posts" class="message">
                             <div class="media msg">
                                 <div class="media-body">
-                                    <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
                                     <div ng-if="post.typePost === 'MESSAGE'">
-                                        <h5 class="media-heading">{{ post.username }}</h5>
-                                        <small class="col-lg-10">{{post.content}}</small>
+                                        <h5 ng-if="$index < 3 || posts[$index - 1].username !== post.username"
+                                            class="media-heading">{{ post.username }}</h5>
+                                        <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
+                                        <small class="col-lg-10 line-break-text">{{post.content}}</small>
                                     </div>
                                      <div ng-if="post.typePost === 'NOTIFICATION_LEAVE_ROOM'">
+                                         <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
                                         <h5 class="media-heading notif-left-room">{{ post.username }} has just left the room.</h5>
                                     </div>
                                     <div ng-if="post.typePost === 'NOTIFICATION_ENTER_ROOM'">
+                                        <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
                                         <h5 class="media-heading notif-enter-room">{{ post.username }} has just entered the room!</h5>
                                     </div>
                                 </div>

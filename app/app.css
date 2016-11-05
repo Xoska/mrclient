@@ -188,5 +188,9 @@ body::-webkit-scrollbar {
 }
 
 .notif-left-room {
-  color: #FF4136;
+  color: #FF4136 !important;
+}
+
+.line-break-text {
+  white-space: pre-wrap;
 }

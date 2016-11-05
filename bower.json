@@ -11,7 +11,6 @@
     "angular-loader": "~1.5.0",
     "angular-mocks": "~1.5.0",
     "html5-boilerplate": "^5.3.0",
-    "angularjs-dropdown-multiselect": "^1.5.2",
     "underscore": "^1.8.3",
     "AngularJS-Toaster": "angularjs-toaster#^2.0.0",
     "angular-toastr": "2.1.1",
@@ -23,6 +22,8 @@
     "bootstrap": "^3.3.7",
     "event-source-polyfill": "^0.0.7",
     "angular-jquery": "^0.2.1",
-    "angular-ui-select": "^0.19.6"
+    "angular-ui-select": "^0.19.6",
+    "angular-ui-utils": "^3.0.0",
+    "angular-sanitize": "^1.5.8"
   }
 }

@@ -116,14 +116,21 @@
                                    ng-class="profileForm.country.$invalid? 'color-danger' : ''">
                                 Country :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="country.idCountry as country.name for country in countries "
-                                            ng-model="profile.idCountry" ng-change="updateSelectCountry(profile.idCountry)"
-                                            name="country" required>
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="profile.idCountry" theme="bootstrap" name="country"
+                                               ng-required="true" ng-change="updateSelectCountry(profile.idCountry)">
+                                        <ui-select-match placeholder="Select a country">{{ $select.selected.name }}</ui-select-match>
+                                        <ui-select-choices repeat="country.idCountry as country in countries | filter: $select.search">
+                                            <span ng-bind-html="country.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="clearCountries()" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -132,14 +139,21 @@
                                    ng-class="profileForm.state.$invalid? 'color-danger' : ''">
                                 State :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="state.idState as state.name for state in states "
-                                            ng-model="profile.idState" ng-change="updateSelectState(profile.idState)"
-                                            name="state" required>
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="profile.idState" theme="bootstrap" name="state"
+                                               ng-required="true" ng-change="updateSelectState(profile.idState)">
+                                        <ui-select-match placeholder="Select a state">{{ $select.selected.name }}</ui-select-match>
+                                        <ui-select-choices repeat="state.idState as state in states | filter: $select.search">
+                                            <span ng-bind-html="state.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="clearStates()" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -148,13 +162,21 @@
                                    ng-class="profileForm.city.$invalid? 'color-danger' : ''">
                                 City :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="city.idCity as city.name for city in cities | orderBy:'name'"
-                                            ng-model="profile.idCity" name="city" required>
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="profile.idCity" theme="bootstrap" name="city"
+                                               ng-required="true">
+                                        <ui-select-match placeholder="Select a city">{{ $select.selected.name }}</ui-select-match>
+                                        <ui-select-choices repeat="city.idCity as city in cities | filter: $select.search">
+                                            <span ng-bind-html="city.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="profile.idCity = null" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -163,13 +185,21 @@
                                    ng-class="profileForm.sex.$invalid? 'color-danger' : ''">
                                 Sex :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="sex.idSex as LABELS[sex.name] for sex in sexes "
-                                            ng-model="profile.idSex" name="sex" required>
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="profile.idSex" theme="bootstrap" name="sex"
+                                               ng-required="true">
+                                        <ui-select-match placeholder="Select a sex">{{ LABELS[$select.selected.name] }}</ui-select-match>
+                                        <ui-select-choices repeat="sex.idSex as sex in sexes | filter: $select.search">
+                                            <span ng-bind-html="LABELS[sex.name] | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="profile.idSex = null" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -187,15 +217,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" ng-if="isLoggedIn">
                             <label class="col-sm-2 control-label">
-                                Username :
+                                Membership :
                             </label>
 
                             <div class="col-sm-5">
                                 <input type="text" class="form-control"
                                        name="role" ng-model="profile.role"
-                                       maxlength="64" ng-disabled="isLoggedIn" required/>
+                                       maxlength="64" disabled required/>
                             </div>
                         </div>
 

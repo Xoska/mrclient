@@ -11,11 +11,13 @@ angular.module('mrclient', [
     'ngAnimate',
     'ui.router',
     'ui.bootstrap',
-    'angularjs-dropdown-multiselect',
+    'ngSanitize',
+    'ui.select',
 
     'constants',
     'services',
     'directives',
+    'filters',
 
     'mrclient.login',
     'mrclient.logout',

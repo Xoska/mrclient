@@ -2,7 +2,7 @@
 
 angular.module('mrclient.profile')
     .controller('ProfileCtrl', function ($scope, toastr, ProfileService, AuthService, LazyLoadingService,
-                                         MeetRouletteService, UserModel, ERRORS_CODE, LABELS) {
+                                         MeetRouletteService, HelperService, UserModel, ERRORS_CODE, LABELS) {
 
         function _setProfile(profile) {
 
@@ -152,7 +152,7 @@ angular.module('mrclient.profile')
 
                         toastr.success('Profile was created successfully', 'Success');
 
-                        _initialize();
+                        HelperService.redirectTo('login');
                     }
                 }, 
                 function(response) {
@@ -172,17 +172,35 @@ angular.module('mrclient.profile')
                 });
         };
 
+        $scope.clearCities = function() {
+
+            $scope.profile.idCity = null;
+        };
+
+        $scope.clearStates = function() {
+
+            $scope.profile.idState = null;
+            $scope.cities = null;
+            $scope.clearCities();
+        };
+
+        $scope.clearCountries = function() {
+
+            $scope.profile.idCountry = null;
+            $scope.states = null;
+            $scope.clearStates();
+        };
+
         $scope.updateSelectCountry = function(idCountry) {
 
-            $scope.cities = null;
-            $scope.states = null;
+            $scope.clearStates();
 
             _initializeStates(idCountry);
         };
 
         $scope.updateSelectState = function(idState) {
 
-            $scope.cities = null;
+            $scope.clearCities();
 
             _initializeCities(idState);
         };

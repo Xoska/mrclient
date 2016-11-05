@@ -45,7 +45,7 @@ angular.module('constants', [])
         GOAL_DATING: 'Dating',
         SEX_MALE: 'Male',
         SEX_FEMALE: 'Female',
-        SEX_TRANSGENDER: 'Transgender',
+        SEX_OTHER: 'Other',
         ANY: 'Any',
         MEMBER: 'Member',
         PRIVILEGED_MEMBER: 'Privileged Member',

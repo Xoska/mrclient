@@ -76,22 +76,13 @@ angular.module('mrclient.search')
                 idSex: 0,
                 idCountry: 0,
                 idState: 0,
-                idsCity: [0],
+                idsCity: [],
                 idGoal: null,
                 ageMin: 16,
                 ageMax: 99
             };
 
-            $scope.selectedCities = [{id: 0}];
-
             $scope.LABELS = LABELS;
-
-            $scope.citiesSettings = {
-                displayProp: 'name',
-                idProp: 'idCity',
-                scrollableHeight: '200px',
-                scrollable: true
-            };
 
             _initializeCountries();
             _initializeSexes();
@@ -100,7 +91,10 @@ angular.module('mrclient.search')
         
         $scope.submit = function() {
 
-            $scope.search.idsCity = _.pluck($scope.selectedCities, 'id');
+            if ($scope.search.idsCity.length === 0) {
+
+                $scope.search.idsCity = [0];
+            }
 
             SearchService.search(idProfile, $scope.search).then(
                 function (room) {
@@ -120,10 +114,28 @@ angular.module('mrclient.search')
                 });
         };
 
+        $scope.clearCities = function() {
+
+            $scope.search.idsCity = [];
+        };
+
+        $scope.clearStates = function() {
+
+            $scope.search.idState = 0;
+            $scope.cities = null;
+            $scope.clearCities();
+        };
+
+        $scope.clearCountries = function() {
+
+            $scope.search.idCountry = 0;
+            $scope.states = null;
+            $scope.clearStates();
+        };
+
         $scope.updateSelectCountry = function(idCountry) {
 
-            $scope.cities = null;
-            $scope.states = null;
+            $scope.clearStates();
 
             if (idCountry !== 0) {
 
@@ -133,7 +145,7 @@ angular.module('mrclient.search')
 
         $scope.updateSelectState = function(idState) {
 
-            $scope.cities = null;
+            $scope.clearCities();
 
             if (idState !== 0) {
 

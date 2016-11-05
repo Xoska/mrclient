@@ -11,50 +11,71 @@
                     <form class="form-horizontal ng-pristine ng-valid" role="form" name="searchForm">
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.country.$invalid? 'color-danger' : ''">
                                 Country :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="country.idCountry as country.name for country in countries "
-                                            ng-model="search.idCountry" ng-change="updateSelectCountry(search.idCountry)"
-                                            name="country">
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="search.idCountry" theme="bootstrap" name="state"
+                                               ng-change="updateSelectCountry(search.idCountry)">
+                                        <ui-select-match placeholder="Select a country">{{ $select.selected.name }}</ui-select-match>
+                                        <ui-select-choices repeat="country.idCountry as country in countries | filter: $select.search">
+                                            <span ng-bind-html="country.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="clearCountries()" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group" ng-if="states.length > 0">
-                            <label class="col-sm-2 control-label">
+                            <label class="col-sm-2 control-label"
+                                   ng-class="searchForm.state.$invalid? 'color-danger' : ''">
                                 State :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="state.idState as state.name for state in states "
-                                            ng-model="search.idState" ng-change="updateSelectState(search.idState)"
-                                            name="state">
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="search.idState" theme="bootstrap" name="state"
+                                               ng-change="updateSelectState(search.idState)">
+                                        <ui-select-match placeholder="Select a state">{{ $select.selected.name }}</ui-select-match>
+                                        <ui-select-choices repeat="state.idState as state in states | filter: $select.search">
+                                            <span ng-bind-html="state.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="clearStates()" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group" ng-if="cities.length > 0">
                             <label class="col-sm-2 control-label"
-                                   ng-class="searchForm.city.$invalid? 'color-danger' : ''">
+                                   ng-class="searchForm.cities.$invalid? 'color-danger' : ''">
                                 Cities :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                        <div ng-dropdown-multiselect=""
-                                             options="cities"
-                                             selected-model="selectedCities"
-                                             extra-settings="citiesSettings">
-                                        </div>
-
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select multiple ng-model="search.idsCity" theme="bootstrap" name="cities"
+                                               close-on-select="false">
+                                        <ui-select-match placeholder="Select cities">{{$item.name}}</ui-select-match>
+                                        <ui-select-choices repeat="city.idCity as city in cities | propsFilter: {name: $select.search}">
+                                            <div ng-bind-html="city.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="clearCities()" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -63,13 +84,20 @@
                                    ng-class="searchForm.sex.$invalid? 'color-danger' : ''">
                                 Sex :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="sex.idSex as LABELS[sex.name] for sex in sexes "
-                                            ng-model="search.idSex" name="sex">
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="search.idSex" theme="bootstrap" name="sex">
+                                        <ui-select-match placeholder="Select a sex">{{ LABELS[$select.selected.name] }}</ui-select-match>
+                                        <ui-select-choices repeat="sex.idSex as sex in sexes | filter: $select.search">
+                                            <span ng-bind-html="LABELS[sex.name] | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="search.idSex = null" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
@@ -78,13 +106,21 @@
                                    ng-class="searchForm.goal.$invalid? 'color-danger' : ''">
                                 Goal :
                             </label>
-
-                            <div class="col-sm-8">
-                                <span class="ui-select">
-                                    <select ng-options="goal.idGoal as LABELS[goal.name] for goal in goals "
-                                            ng-model="search.idGoal" name="goal" required>
-                                    </select>
-                                </span>
+                            <div class="col-sm-5">
+                                <div class="input-group">
+                                    <ui-select allow-clear ng-model="search.idGoal" theme="bootstrap" name="goal"
+                                               ng-required="true">
+                                        <ui-select-match placeholder="Select a goal">{{ LABELS[$select.selected.name] }}</ui-select-match>
+                                        <ui-select-choices repeat="goal.idGoal as goal in goals | filter: $select.search">
+                                            <span ng-bind-html="LABELS[goal.name] | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span class="input-group-btn">
+                                      <button type="button" ng-click="search.idGoal = null" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                      </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 

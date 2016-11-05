@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('services')
-    .factory('LazyLoadingService', function (MeetRouletteService, toastr) {
+    .factory('LazyLoadingService', function ($q, MeetRouletteService, toastr) {
 
         var loadedSexes = null;
         var loadedGoals = null;
@@ -22,47 +22,67 @@ angular.module('services')
 
         function getSexes() {
 
-            return _cloneData(loadedSexes);
+            var deferred = $q.defer();
+
+            if (loadedSexes) {
+
+                deferred.resolve(_cloneData(loadedSexes));
+            }
+
+            MeetRouletteService.getSexes().then(
+                function (sexes) {
+
+                    loadedSexes = sexes;
+                    deferred.resolve(sexes);
+                },
+                _notifyErrorInitialization);
+
+            return deferred.promise;
         }
 
         function getGoals() {
 
-            return _cloneData(loadedGoals);
+            var deferred = $q.defer();
+
+            if (loadedGoals) {
+
+                deferred.resolve(_cloneData(loadedGoals));
+            }
+
+            MeetRouletteService.getGoals().then(
+                function (goals) {
+
+                    loadedGoals = goals;
+                    deferred.resolve(goals);
+                },
+                _notifyErrorInitialization);
+
+            return deferred.promise;
         }
 
         function getCountries() {
 
-            return _cloneData(loadedCountries);
-        }
+            var deferred = $q.defer();
 
-        function lazyLoadData() {
+            if (loadedCountries) {
 
-            if (!loadedSexes) {
-
-                MeetRouletteService.getSexes().then(
-                    function (sexes) { loadedSexes = sexes; },
-                    _notifyErrorInitialization);
+                deferred.resolve(_cloneData(loadedCountries));
             }
 
-            if (!loadedGoals) {
+            MeetRouletteService.getCountries().then(
+                function (countries) {
 
-                MeetRouletteService.getGoals().then(
-                    function (goals) { loadedGoals = goals; },
-                    _notifyErrorInitialization);
-            }
+                    loadedCountries = countries;
+                    deferred.resolve(countries);
+                },
+                _notifyErrorInitialization);
 
-            if (!loadedCountries) {
-
-                MeetRouletteService.getCountries().then(
-                    function (countries) { loadedCountries = countries; },
-                    _notifyErrorInitialization);
-            }
+            return deferred.promise;
         }
 
         return {
             getCountries: getCountries,
             getSexes: getSexes,
-            getGoals: getGoals,
-            lazyLoadData: lazyLoadData
+            getGoals: getGoals
         };
     });

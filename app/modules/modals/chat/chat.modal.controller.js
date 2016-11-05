@@ -11,7 +11,18 @@ angular.module('mrclient.modals')
 
             var time = new Date();
 
-            return time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds();
+            var hours = HelperService.padZero(time.getHours(), 2);
+            var minutes = HelperService.padZero(time.getMinutes(), 2);
+            var seconds = HelperService.padZero(time.getSeconds(), 2);
+
+            return hours + ':' + minutes + ':' + seconds;
+        }
+
+        function _pushMessageToChatbox(post) {
+
+            $(".msg-wrap").animate({ scrollTop: $('.msg-wrap').prop("scrollHeight")}, 1);
+
+            $scope.posts.push(post);
         }
 
         function _processEvent(post) {
@@ -20,25 +31,17 @@ angular.module('mrclient.modals')
 
             if (post.typePost === TYPE_POST.MESSAGE) {
 
-                $scope.posts.push(post);
+                _pushMessageToChatbox(post);
             }
             else if (post.typePost === TYPE_POST.NOTIFICATION_ENTER_ROOM) {
 
-                toastr.success(post.username + post.content, 'Information');
-
-                post.content = 'I have just joined the room!';
-
                 _setTitleConversation(username, post.username);
 
-                $scope.posts.push(post);
+                _pushMessageToChatbox(post);
             }
             else if (post.typePost === TYPE_POST.NOTIFICATION_LEAVE_ROOM) {
 
-                post.content = 'I just left the room';
-
-                toastr.info(post.username + post.content, 'Information');
-
-                $scope.posts.push(post);
+                _pushMessageToChatbox(post);
             }
         }
 
@@ -61,14 +64,13 @@ angular.module('mrclient.modals')
 
         function _setTitleWaiting () {
 
-            $scope.title = 'Waiting for someone to join the chat room...';
+            $scope.title = 'Waiting for someone to match your criterias...';
         }
 
         function _setTitleConversation (username1, username2) {
 
             $scope.title = 'Conversation between ' + username1 + ' and ' + username2;
         }
-
 
         function _initializeConnectionSSE() {
 
@@ -83,6 +85,8 @@ angular.module('mrclient.modals')
                         var post = JSON.parse(event.data);
 
                         _processEvent(post);
+
+                        $scope.$apply();
                     }
                 };
 
@@ -91,10 +95,6 @@ angular.module('mrclient.modals')
                     if (_isConnectionOpen() && username !== room.owner) {
 
                         ChatService.sendPost(room.idRoom, $scope.post);
-                    }
-                    else {
-
-                        _processErrorEventSource();
                     }
                 };
 
@@ -110,20 +110,24 @@ angular.module('mrclient.modals')
 
         function _initialize() {
 
+            $scope.posts = [];
+
             if (room.owner === username) {
 
                 _setTitleWaiting();
-
-                toastr.info('You were placed in the queue. Wait until we find a good match for you', 'Information');
             }
             else {
 
                 _setTitleConversation(username, room.owner);
 
-                toastr.info('Someone is already waiting in the room!', 'Information');
-            }
+                var post = {
+                    username: room.owner,
+                    time: _getTimeFormat(),
+                    typePost: TYPE_POST.NOTIFICATION_ENTER_ROOM
+                };
 
-            $scope.posts = [];
+                _pushMessageToChatbox(post);
+            }
 
             $scope.post = {
                 idPost: null,

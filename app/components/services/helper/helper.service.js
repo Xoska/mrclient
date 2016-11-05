@@ -31,9 +31,22 @@ angular.module('services')
             return count;
         }
 
+        function padZero(number, size) {
+
+            var numberAsString = number + "";
+
+            while (numberAsString.length < size) {
+
+                numberAsString = "0" + numberAsString;
+            }
+
+            return numberAsString;
+        }
+
         return {
             isOnPage: isOnPage,
             redirectTo: redirectTo,
-            findOccurrencesInArray: findOccurrencesInArray
+            findOccurrencesInArray: findOccurrencesInArray,
+            padZero: padZero
         };
     });

@@ -12,14 +12,17 @@ angular.module('services')
 
         function setCurrentUser(session) {
 
-            $cookies.put('mr-token', session.name);
+            if (!$cookies.getObject('mr-session')) {
+
+                $cookies.putObject('mr-session', session);
+            }
 
             currentUser = session;
         }
 
         function isAuthenticated() {
 
-            return currentUser && $cookies.get('mr-token');
+            return currentUser && $cookies.getObject('mr-session');
         }
 
         function isAuthorized(authorizedRoles) {
@@ -30,7 +33,7 @@ angular.module('services')
 
         function destroyUser() {
 
-            $cookies.remove('mr-token');
+            $cookies.remove('mr-session');
 
             currentUser = null;
 

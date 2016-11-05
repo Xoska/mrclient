@@ -9,6 +9,8 @@ angular.module('mrclient.profile')
             profile.password = null;
             profile.birthdayDate = new Date(profile.birthdayDate);
 
+            profile.role =  LABELS[profile.role];
+
             $scope.profile = profile;
         }
 
@@ -67,7 +69,11 @@ angular.module('mrclient.profile')
         
         function _initializeCountries() {
 
-            $scope.countries = LazyLoadingService.getCountries();
+            LazyLoadingService.getCountries().then(
+                function(countries) {
+
+                    $scope.countries = countries;
+                });
         }
 
         function _initializeStates(idCountry) {
@@ -98,7 +104,11 @@ angular.module('mrclient.profile')
 
         function _initializeSexes() {
 
-            $scope.sexes = LazyLoadingService.getSexes();
+             LazyLoadingService.getSexes().then(
+                function(sexes) {
+
+                    $scope.sexes = sexes;
+                });
         }
 
         function _setCurrentDateFormat() {

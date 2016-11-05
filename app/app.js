@@ -55,15 +55,15 @@ angular.module('mrclient', [
 
                 try {
 
-                    if ($cookies.get('mr-token')) {
+                    if ($cookies.getObject('mr-session')) {
 
-                        config.headers['Authorization'] = 'Bearer ' + $cookies.get('mr-token');
+                        config.headers['Authorization'] = 'Bearer ' + $cookies.getObject('mr-session').name;
                     }
                 } catch (err) {
 
                     if (isOnPage('login') && isOnPage('logout')) {
 
-                        $cookies.remove('mr-token');
+                        $cookies.remove('mr-session');
                         $location.path('/login');
                     }
                 }
@@ -84,11 +84,15 @@ angular.module('mrclient', [
         };
     })
 
-    .run(function ($rootScope, $state, $timeout, $translate,
-                   $stateParams, $filter, UserModel, AUTH_EVENTS) {
+    .run(function ($rootScope, $cookies, UserModel, LazyLoadingService, AUTH_EVENTS) {
 
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$routeChangeStart', function (event, next, prev) {
+
+            if ($cookies.getObject('mr-session') && !UserModel.getCurrentUser()) {
+
+                UserModel.setCurrentUser($cookies.getObject('mr-session'));
+            }
 
             if (next !== undefined && 'data' in next && next.data) {
 
@@ -149,29 +153,4 @@ angular.module('mrclient', [
 
             window.scrollTo(0, 0);
         });
-
-        LazyLoadingService.lazyLoadData();
-
-        function getSubdomain(segments) {
-
-            var subdomain = segments.length > 2 ? segments[0].toLowerCase() : null;
-
-            if (subdomain && subdomain.indexOf('-dev') !== -1) {
-
-                subdomain = subdomain.substr(0, (subdomain.length - 4));
-            } else if (subdomain && subdomain.indexOf('-local') !== -1) {
-
-                subdomain = subdomain.substr(0, (subdomain.length - 6));
-            } else if (subdomain && subdomain.indexOf('-canary') !== -1) {
-
-                subdomain = subdomain.substr(0, (subdomain.length - 7));
-            }
-
-            if (subdomain) {
-
-                subdomain = subdomain.replace(/\d+$/, '');
-            }
-
-            return subdomain;
-        }
     });

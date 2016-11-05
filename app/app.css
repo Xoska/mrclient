@@ -34,7 +34,11 @@
 }
 
 .color-danger {
-  color: red;
+  color:  #FF4136;
+}
+
+select {
+  margin-top: 4px;
 }
 
 
@@ -69,7 +73,7 @@
 .msg-wrap
 {
   padding:10px;
-  max-height: 200px;
+  height: 250px;
   overflow: auto;
 
 }
@@ -181,4 +185,8 @@ body::-webkit-scrollbar {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: #ddd;
+}
+
+.notif-left-room {
+  color: #FF4136;
 }

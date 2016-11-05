@@ -14,7 +14,7 @@ angular.module('services')
                 id_profile: idProfile
             };
 
-            return Restangular.all('chat/leave', idRoom).get(params);
+            return Restangular.one('chat/leave/' + idRoom).get(params);
         }
 
         return {

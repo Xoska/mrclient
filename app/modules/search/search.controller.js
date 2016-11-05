@@ -19,7 +19,11 @@ angular.module('mrclient.search')
 
         function _initializeCountries() {
 
-            $scope.countries = _addLabelToList(LazyLoadingService.getCountries(), 'idCountry', 'name', 'Wherever');
+            LazyLoadingService.getCountries().then(
+                function(countries) {
+
+                    $scope.countries = _addLabelToList(countries, 'idCountry', 'name', 'Wherever');
+                });
         }
 
         function _initializeStates(idCountry) {
@@ -50,24 +54,32 @@ angular.module('mrclient.search')
 
         function _initializeSexes() {
 
-            $scope.sexes = _addLabelToList(LazyLoadingService.getSexes(), 'idSex', 'name', 'ANY');
+            LazyLoadingService.getSexes().then(
+                function(sexes) {
+
+                    $scope.sexes = _addLabelToList(sexes, 'idSex', 'name', 'ANY');
+                });
         }
 
         function _initializeGoals() {
 
-            $scope.goals = LazyLoadingService.getGoals();
+            LazyLoadingService.getGoals().then(
+                function(goals) {
+
+                    $scope.goals = goals;
+                });
         }
 
         function _initialize() {
 
             $scope.search = {
-                idSex: null,
+                idSex: 0,
                 idCountry: 0,
                 idState: 0,
                 idsCity: [0],
                 idGoal: null,
-                ageMin: null,
-                ageMax: null
+                ageMin: 16,
+                ageMax: 99
             };
 
             $scope.selectedCities = [{id: 0}];

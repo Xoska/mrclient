@@ -4,41 +4,63 @@
             <h4>
                 {{ title }}
             </h4>
-        </div>
 
-        <div class="modal-body">
+            <div ng-if="posts.length === 0">
+                <h5>
+                    You will be moved to a chat room once a match is found!
+                </h5>
+                <h5>
+                    Please be patient.
+                </h5>
 
-            <div class="message-wrap col-lg-8">
-                <div class="msg-wrap">
-
-                    <span ng-repeat="post in posts" class="message">
-                        <div class="media msg">
-                            <div class="media-body">
-                                <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
-                                <h5 class="media-heading">{{ post.username }}</h5>
-                                <small class="col-lg-10">{{post.content}}</small>
-                            </div>
-                        </div>
-                    </span>
-                </div>
+                <button class="btn btn-default" ng-click="leave()">Cancel</button>
             </div>
         </div>
 
-        <div class="modal-footer">
+        <div ng-if="posts.length > 0">
 
-            <div class="send-wrap">
+            <div class="modal-body">
+
+                <div class="message-wrap col-lg-8">
+                    <div class="msg-wrap">
+
+                        <span ng-repeat="post in posts" class="message">
+                            <div class="media msg">
+                                <div class="media-body">
+                                    <small class="pull-right time"><i class="fa fa-clock-o"></i>{{ post.time }}</small>
+                                    <div ng-if="post.typePost === 'MESSAGE'">
+                                        <h5 class="media-heading">{{ post.username }}</h5>
+                                        <small class="col-lg-10">{{post.content}}</small>
+                                    </div>
+                                     <div ng-if="post.typePost === 'NOTIFICATION_LEAVE_ROOM'">
+                                        <h5 class="media-heading notif-left-room">{{ post.username }} has just left the room.</h5>
+                                    </div>
+                                    <div ng-if="post.typePost === 'NOTIFICATION_ENTER_ROOM'">
+                                        <h5 class="media-heading notif-enter-room">{{ post.username }} has just entered the room!</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+                <div class="send-wrap">
                     <textarea class="form-control" rows="3"
                               ng-class="post.content.$invalid ? 'ui-select-danger' : ''"
                               name="content" ng-model="post.content" required>
                     </textarea>
-            </div>
+                </div>
 
-            <div>
-                <input type="submit"  ng-disabled="chatModalForm.$invalid"
-                       value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
-                       ng-click="submit()"/>
+                <div>
+                    <input type="submit"  ng-disabled="chatModalForm.$invalid"
+                           value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
+                           ng-click="submit()"/>
 
-                <button class="btn btn-default" ng-click="leave()">Leave Room</button>
+                    <button class="btn btn-default" ng-click="leave()">Leave Room</button>
+                </div>
             </div>
         </div>
 </script>

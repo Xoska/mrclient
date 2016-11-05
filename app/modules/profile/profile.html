@@ -10,25 +10,17 @@
                 <div class="col-lg-10">
                     <form class="form-horizontal ng-pristine ng-valid" role="form" name="profileForm">
 
-                        <div class="form-group" ng-if="isLoggedIn">
-                            <label class="col-sm-2 control-label">
-                                Username :
-                            </label>
-
-                            {{ profile.username }}
-                        </div>
-
-                        <div class="form-group" ng-if="!isLoggedIn">
+                        <div class="form-group">
                             <label class="col-sm-2 control-label"
                                    ng-class="profileForm.username.$invalid? 'color-danger' : ''">
                                 Username :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control"
                                        ng-class="profileForm.username.$invalid ? 'ui-select-danger' : ''"
                                        name="username" ng-model="profile.username"
-                                       maxlength="64" required/>
+                                       maxlength="64" ng-disabled="isLoggedIn" required/>
                             </div>
                         </div>
 
@@ -38,7 +30,7 @@
                                 Password :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="password" class="form-control"
                                        ng-class="profileForm.password.$invalid ? 'ui-select-danger' : ''"
                                        name="password" ng-model="profile.password"
@@ -51,7 +43,7 @@
                                 Password :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="password" class="form-control"
                                        ng-class="profileForm.password.$invalid ? 'ui-select-danger' : ''"
                                        name="password" ng-model="profile.password"
@@ -69,7 +61,7 @@
                                 First Name :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control"
                                        ng-class="profileForm.firstName.$invalid ? 'ui-select-danger' : ''"
                                        name="firstName" ng-model="profile.firstName"
@@ -83,7 +75,7 @@
                                 Last Name :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control"
                                        ng-class="profileForm.lastName.$invalid ? 'ui-select-danger' : ''"
                                        name="lastName" ng-model="profile.lastName"
@@ -97,7 +89,7 @@
                                 Email :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="email" class="form-control"
                                        ng-class="profileForm.email.$invalid ? 'ui-select-danger' : ''"
                                        name="email" ng-model="profile.email"
@@ -111,7 +103,7 @@
                                 Zip Code :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="text" class="form-control"
                                        ng-class="profileForm.zipCode.$invalid ? 'ui-select-danger' : ''"
                                        name="zipCode" ng-model="profile.zipCode"
@@ -187,23 +179,28 @@
                                 Birthday Date :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
                                 <input type="date" class="form-control"
                                        ng-class="profileForm.zipCode.$invalid ? 'ui-select-danger' : ''"
                                        name="birthdayDate" ng-model="profile.birthdayDate"
-                                       max="{{maxDate}}" min="{{minDate}}" required/>
+                                       max="{{maxDate}}" min="{{minDate}}" ng-disabled="isLoggedIn" required/>
                             </div>
                         </div>
 
-                        <div class="form-group" ng-if="isLoggedIn">
+                        <div class="form-group">
                             <label class="col-sm-2 control-label">
-                                Membership :
+                                Username :
                             </label>
-                            {{ LABELS[profile.role] }}
+
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control"
+                                       name="role" ng-model="profile.role"
+                                       maxlength="64" ng-disabled="isLoggedIn" required/>
+                            </div>
                         </div>
 
                         <div class="text-center">
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
 
                                 <input type="submit"  ng-disabled="profileForm.$invalid"
                                        value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"

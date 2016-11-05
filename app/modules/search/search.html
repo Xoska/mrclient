@@ -94,7 +94,7 @@
                                 Minimum Age :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-2">
                                 <input type="number" class="form-control"
                                        ng-class="searchForm.ageMin.$invalid ? 'ui-select-danger' : ''"
                                        name="ageMin" ng-model="search.ageMin" min="16"
@@ -108,7 +108,7 @@
                                 Maximum Age :
                             </label>
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-2">
                                 <input type="number" class="form-control"
                                        ng-class="searchForm.ageMax.$invalid ? 'ui-select-danger' : ''"
                                        name="ageMax" ng-model="search.ageMax"  min="{{search.ageMin}}"
@@ -117,7 +117,7 @@
                         </div>
 
                         <div class="text-center">
-                            <div class="col-sm-8">
+                            <div class="col-sm-5">
 
                                 <input type="submit"  ng-disabled="searchForm.$invalid"
                                        value="Submit" class="btn btn-primary btn-w-md wam-btn-secondary"
